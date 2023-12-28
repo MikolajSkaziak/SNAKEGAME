@@ -1,28 +1,31 @@
 
-from tkinter import Label, Tk, Canvas
-
+from tkinter import *
+import random
 
 GAME_WIDTH=700
 GAME_HEIGHT=700 
 GAME_SPEED=50
-SPACE_SIZE=30
+SPACE_SIZE=35
 SNAKE_PARTS=3
 SNAKE_COLOUR="blue"
 FOOD_COLOUR="red"
 BACKGROUND_COLOUR="black"
-# Klasy:
 
+# Klasy:
 class Snake:
     pass
 
 class Food:
-    pass
+    
+    def __init__(self):
+        
+       x= random.randint(0,int(GAME_WIDTH / SPACE_SIZE)-1)*SPACE_SIZE 
+       y= random.randint(0,int(GAME_HEIGHT / SPACE_SIZE)-1)*SPACE_SIZE
+       self.coordinates=[x,y]
+       canvas.create_oval(x,y, x+SPACE_SIZE, y+SPACE_SIZE, fill=FOOD_COLOUR, tag= "food")
 
-class Counter:
-    pass
 
 # Funkcje:
-
 def next_move():
   pass
 
@@ -54,4 +57,8 @@ screen_height=window.winfo_screenheight()
 x=int((screen_width/2)-(window_width/2))
 y=int((screen_height/2)-(window_height/2))
 window.geometry(f"{window_width}x{window_height}+{x}+{y}")
+
+snake=Snake()
+food=Food()
+
 window.mainloop()
