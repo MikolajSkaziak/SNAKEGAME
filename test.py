@@ -6,8 +6,8 @@ import tkinter as tk
 GAME_WIDTH=700
 GAME_HEIGHT=700 
 MENU_WIDTH=350
-MENU_HEIGHT=400
-GAME_SPEED=50
+MENU_HEIGHT=600
+GAME_SPEED=80
 SPACE_SIZE=35
 SNAKE_PARTS=3
 SNAKE_COLOUR="blue"
@@ -24,23 +24,20 @@ def on_button_click():
 def start_game():
     main_frame.pack_forget()
     canvas.pack()
-    
-    score = 0
-    label.config(text="Score:{}".format(score))
     snake = Snake()
     food = Food()
     next_move(snake, food)
     window.geometry(f"{GAME_WIDTH}x{GAME_HEIGHT}")
     
-    GAME_WIDTH = window.winfo_width()
-    GAME_HEIGHT = window.winfo_height()
+    window_width = window.winfo_width()
+    window_height = window.winfo_height()
     screen_width = window.winfo_screenwidth()
     screen_height = window.winfo_screenheight()
 
-    x = int((screen_width / 2) - (GAME_SPEED / 2))
-    y = int((screen_height / 2) - (GAME_HEIGHT / 2))
+    x = int((screen_width / 2) - (window_width / 2))
+    y = int((screen_height / 2) - (window_height / 2))
     window.geometry(f"{GAME_WIDTH}x{GAME_HEIGHT}+{x}+{y}") 
-    
+    label.pack() 
 
 # Klasy:
 class Snake:
@@ -133,13 +130,16 @@ def check_collision(snake):
 def gameover():
     canvas.delete(ALL)
     canvas.create_text(canvas.winfo_width()/2,canvas.winfo_height()/2,font=('ARIAL',70),text="GAME OVER",fill="red",tag="gameover")
- #Dostosowanie Okna
+ 
+#Dostosowanie Okna
 window=tk.Tk()
 window.title("Snake Game")
-window.geometry('350x450')
+window.geometry(f"{MENU_WIDTH}x{MENU_HEIGHT}")
 window.resizable(False, False)
-direction = 'down'  
-
+score=0
+direction='down'
+label= Label(window,text="Score:{}".format(score), font=('ARIAL',40))
+label.pack()
 window.update()
 window_width=window.winfo_width()
 window_height=window.winfo_height()
@@ -216,8 +216,6 @@ Quit_button.grid(column=0,row=2)
 
 canvas= Canvas(window,bg=BACKGROUND_COLOUR,height=GAME_HEIGHT,width=GAME_WIDTH)
 
-label= Label(window,text="Score:{}".format(0), font=('ARIAL',40))
-label.pack()
  
 #Przypisanie klawiszy:
 window.bind('<Left>',lambda event: change_direction('left'))
