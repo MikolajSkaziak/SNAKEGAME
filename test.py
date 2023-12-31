@@ -2,6 +2,7 @@
 from tkinter import *
 import random
 import tkinter as tk
+from PIL import Image
 
 GAME_WIDTH=700
 GAME_HEIGHT=700 
@@ -76,7 +77,7 @@ def next_move(snake,food):
       label.config(text="Score:{}".format(score))
       canvas.delete("food")
       food=Food()
-      GAME_SPEED-=5
+      GAME_SPEED-=2
   else:
      del snake.coordinates[-1]
      canvas.delete(snake.squares[-1])
