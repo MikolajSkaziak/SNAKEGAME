@@ -13,33 +13,25 @@ SNAKE_PARTS=3
 SNAKE_COLOUR="blue"
 FOOD_COLOUR="red"
 BACKGROUND_COLOUR="black"
+
 colour1='#020f12'
 colour2='#05d7ff'
 colour3='#65e7ff'
 colour4='BLACK'
+
 def on_button_click():
+    global label
+    label= Label(window,text="Score:{}".format(score), font=('ARIAL',40))
+    label.pack()
     start_game()
   
-    
 def start_game():
     main_frame.pack_forget()
     canvas.pack()
     snake = Snake()
     food = Food()
     next_move(snake, food)
-    window.geometry(f"{GAME_WIDTH}x{GAME_HEIGHT}")
     
-    window_width = window.winfo_width()
-    window_height = window.winfo_height()
-    screen_width = window.winfo_screenwidth()
-    screen_height = window.winfo_screenheight()
-
-    x = int((screen_width / 2) - (window_width / 2))
-    y = int((screen_height / 2) - (window_height / 2))
-    window.geometry(f"{GAME_WIDTH}x{GAME_HEIGHT}+{x}+{y}") 
-    label.pack() 
-
-# Klasy:
 class Snake:
     def __init__(self):
         self.body_size=SNAKE_PARTS
@@ -60,7 +52,6 @@ class Food:
        y= random.randint(0,int(GAME_HEIGHT / SPACE_SIZE)-1)*SPACE_SIZE
        self.coordinates=[x,y]
        canvas.create_oval(x,y, x+SPACE_SIZE, y+SPACE_SIZE, fill=FOOD_COLOUR, tag= 'food')
-
 
 
 def next_move(snake,food):
@@ -95,7 +86,6 @@ def next_move(snake,food):
   else:
       window.after(GAME_SPEED,next_move,snake,food)    
   
-
 def change_direction(new_direction):
     global direction
     
@@ -136,12 +126,11 @@ def gameover():
 #Dostosowanie Okna
 window=tk.Tk()
 window.title("Snake Game")
-window.geometry(f"{MENU_WIDTH}x{MENU_HEIGHT}")
+window.geometry(f"{GAME_WIDTH}x{GAME_HEIGHT}")
 window.resizable(False, False)
 score=0
 direction='down'
-label= Label(window,text="Score:{}".format(score), font=('ARIAL',40))
-label.pack()
+
 window.update()
 window_width=window.winfo_width()
 window_height=window.winfo_height()
@@ -175,7 +164,6 @@ Play_button=tk.Button(
     font=('ARIAL',20),
     command=on_button_click
     )
-
 
 Quit_button=tk.Button(
     main_frame,
@@ -212,6 +200,7 @@ Settings_button=tk.Button(
     font=('ARIAL',20),
     command=on_button_click
     )
+
 Play_button.grid(column=0,row=0)
 Settings_button.grid(column=0,row=1)
 Quit_button.grid(column=0,row=2)
