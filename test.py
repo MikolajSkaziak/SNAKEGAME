@@ -7,7 +7,7 @@ GAME_WIDTH=700
 GAME_HEIGHT=700 
 MENU_WIDTH=350
 MENU_HEIGHT=600
-GAME_SPEED=80
+GAME_SPEED=100
 SPACE_SIZE=35
 SNAKE_PARTS=3
 SNAKE_COLOUR="blue"
@@ -78,12 +78,14 @@ def next_move(snake,food):
   snake.coordinates.insert(0,(x,y))  
   square=canvas.create_rectangle(x,y,x+SPACE_SIZE,y+SPACE_SIZE,fill=SNAKE_COLOUR)  
   snake.squares.insert(0,square)
+  global GAME_SPEED
   if x==food.coordinates[0] and y==food.coordinates[1]:
       global score
       score+=1      
       label.config(text="Score:{}".format(score))
       canvas.delete("food")
       food=Food()
+      GAME_SPEED-=5
   else:
      del snake.coordinates[-1]
      canvas.delete(snake.squares[-1])
@@ -215,7 +217,6 @@ Settings_button.grid(column=0,row=1)
 Quit_button.grid(column=0,row=2)
 
 canvas= Canvas(window,bg=BACKGROUND_COLOUR,height=GAME_HEIGHT,width=GAME_WIDTH)
-
  
 #Przypisanie klawiszy:
 window.bind('<Left>',lambda event: change_direction('left'))
