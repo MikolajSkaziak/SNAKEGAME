@@ -2,13 +2,13 @@
 from tkinter import *
 import random
 import tkinter as tk
-from PIL import Image
+from PIL import Image,ImageTk
 
 GAME_WIDTH=700
 GAME_HEIGHT=700 
 MENU_WIDTH=350
 MENU_HEIGHT=600
-GAME_SPEED=100
+GAME_SPEED=100  
 SPACE_SIZE=35
 SNAKE_PARTS=3
 SNAKE_COLOUR="blue"
@@ -21,14 +21,16 @@ colour3='#65e7ff'
 colour4='BLACK'
 
 def on_button_click():
-    global label
+    global label    
+    global canvas
     label= Label(window,text="Score:{}".format(score), font=('ARIAL',40))
     label.pack()
+    canvas= Canvas(window,bg=BACKGROUND_COLOUR,height=GAME_HEIGHT,width=GAME_WIDTH)
+    canvas.pack()
     start_game()
   
 def start_game():
     main_frame.pack_forget()
-    canvas.pack()
     snake = Snake()
     food = Food()
     next_move(snake, food)
@@ -123,7 +125,7 @@ def check_collision(snake):
 def gameover():
     canvas.delete(ALL)
     canvas.create_text(canvas.winfo_width()/2,canvas.winfo_height()/2,font=('ARIAL',70),text="GAME OVER",fill="red",tag="gameover")
- 
+
 #Dostosowanie Okna
 window=tk.Tk()
 window.title("Snake Game")
@@ -141,12 +143,17 @@ screen_height=window.winfo_screenheight()
 x=int((screen_width/2)-(window_width/2))
 y=int((screen_height/2)-(window_height/2))
 window.geometry(f"{window_width}x{window_height}+{x}+{y}")
+#Loading an Image:
+menu_background_image=Image.open('C:\\Users\\admin\\Documents\\GitHub\\SNAKEGAME\\MENU_BACKGROUND.jpg')
+menu_background=ImageTk.PhotoImage(menu_background_image)
 
 main_frame=tk.Frame(window,bg=colour1,pady=40)
 main_frame.pack(fill=tk.BOTH,expand=True)
 main_frame.columnconfigure(0,weight=1)
 main_frame.rowconfigure(0,weight=1)
 main_frame.rowconfigure(1,weight=1)
+Menu_background=Label(main_frame,image=menu_background)
+Menu_background.place(x=0,y=0)
 
 Play_button=tk.Button(
     main_frame,
@@ -206,8 +213,8 @@ Play_button.grid(column=0,row=0)
 Settings_button.grid(column=0,row=1)
 Quit_button.grid(column=0,row=2)
 
-canvas= Canvas(window,bg=BACKGROUND_COLOUR,height=GAME_HEIGHT,width=GAME_WIDTH)
- 
+
+
 #Przypisanie klawiszy:
 window.bind('<Left>',lambda event: change_direction('left'))
 window.bind('<Right>',lambda event: change_direction('right'))
