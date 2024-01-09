@@ -7,7 +7,7 @@ GAME_WIDTH=700
 GAME_HEIGHT=700 
 MENU_WIDTH=350
 MENU_HEIGHT=600
-GAME_SPEED=100  
+GAME_SPEED=150  
 SPACE_SIZE=35
 SNAKE_PARTS=3
 SNAKE_COLOUR="blue"
@@ -135,7 +135,7 @@ def gameover():
         tag="gameover")
 
     play_again_button = tk.Button(
-        window,
+       window,
         background=colour2,
         foreground=colour4,
         activebackground=colour3,
@@ -153,7 +153,6 @@ def gameover():
     )
     
     label.pack_forget()
- 
 
     quit_button = tk.Button(
         window,
