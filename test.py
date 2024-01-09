@@ -1,4 +1,3 @@
-
 from tkinter import *
 import random
 import tkinter as tk
@@ -23,6 +22,7 @@ colour4='BLACK'
 def on_button_click():
     global label    
     global canvas
+    
     label= Label(window,text="Score:{}".format(score), font=('ARIAL',40))
     label.pack()
     canvas= Canvas(window,bg=BACKGROUND_COLOUR,height=GAME_HEIGHT,width=GAME_WIDTH)
@@ -30,7 +30,11 @@ def on_button_click():
     start_game()
   
 def start_game():
+    global window
     main_frame.pack_forget()
+    canvas.pack()
+    window.geometry(f"{GAME_WIDTH}x{GAME_HEIGHT+75}")
+    window.update()
     snake = Snake()
     food = Food()
     next_move(snake, food)
@@ -133,18 +137,16 @@ window.geometry(f"{GAME_WIDTH}x{GAME_HEIGHT}")
 window.resizable(False, False)
 score=0
 direction='down'
-
 window.update()
 window_width=window.winfo_width()
 window_height=window.winfo_height()
 screen_width=window.winfo_screenwidth()
 screen_height=window.winfo_screenheight()
-
 x=int((screen_width/2)-(window_width/2))
 y=int((screen_height/2)-(window_height/2))
 window.geometry(f"{window_width}x{window_height}+{x}+{y}")
 #Loading an Image:
-menu_background_image=Image.open('C:\\Users\\admin\\Documents\\GitHub\\SNAKEGAME\\MENU_BACKGROUND.jpg')
+menu_background_image=Image.open('C:\\Users\\skuzi\\Documents\\GitHub\\SNAKEGAME\\MENU_BACKGROUND.jpg')
 menu_background=ImageTk.PhotoImage(menu_background_image)
 
 main_frame=tk.Frame(window,bg=colour1,pady=40)
@@ -212,7 +214,6 @@ Settings_button=tk.Button(
 Play_button.grid(column=0,row=0)
 Settings_button.grid(column=0,row=1)
 Quit_button.grid(column=0,row=2)
-
 
 
 #Przypisanie klawiszy:
