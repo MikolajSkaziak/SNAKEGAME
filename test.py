@@ -18,7 +18,19 @@ colour1='#020f12'
 colour2='#05d7ff'
 colour3='#65e7ff'
 colour4='BLACK'
-     
+
+def update_highscore_file():        
+        with open("highscore.txt", "w") as file:
+            file.write(str(highscore))
+
+def read_highscore_file():
+    try:
+        with open("highscore.txt", "r") as file:
+            return int(file.read())
+    except FileNotFoundError:
+        return 0  
+highscore = read_highscore_file()
+highscore_label = None
 class Snake:
     def __init__(self):
         self.body_size=SNAKE_PARTS
@@ -44,6 +56,8 @@ def start_game():
     global label    
     global canvas
     global window
+    global score
+    score=0
     main_frame.pack_forget()
     label= Label(window,text="Score:{}".format(score), font=('ARIAL',40))
     label.pack()
@@ -173,21 +187,26 @@ def gameover():
     play_again_button.pack(side='left')
     quit_button.pack(side='right')
     
-    global highscore
+    global highscore_label,highscore
+    highscore = read_highscore_file()
     highscore_label = canvas.create_text(
         canvas.winfo_width() / 2, canvas.winfo_height() / 2 + 50,
         font=('ARIAL', 20),
         text="Highscore: {}".format(highscore),
         fill="white",
         tag="highscore")
+    
+    if score > highscore:
+        highscore = score
+        update_highscore_file()
+        
 
+    
 def reset_game():
     canvas.pack_forget()
-    global score
     global direction
     score = 0
     direction = 'down'
- 
     
     for widget in window.winfo_children():
         if isinstance(widget, tk.Button):
@@ -197,6 +216,8 @@ def reset_game():
     
     start_game()
     
+
+    
 def settings():
     main_frame.pack_forget()
     settings_frame=tk.Frame(window,bg=colour1,pady=40)
@@ -205,24 +226,25 @@ def settings():
     settings_frame.rowconfigure(0,weight=1)
     settings_frame.rowconfigure(1,weight=1)
     
-    Back_button=tk.Button(
-    settings_frame,
-    background=colour2,
-    foreground=colour4,
-    activebackground=colour3,
-    activeforeground=colour4,
-    highlightthickness=2,
-    highlightbackground=colour3,
-    highlightcolor='WHITE',
-    width=13,
-    height=2,
-    border=0,
-    cursor='hand1',
-    text='Back',
-    font=('ARIAL',20),
-    command=Back_to_menu
+    back_to_menu=tk.Button(
+        settings_frame,
+        background=colour2,
+        foreground=colour4,
+        activebackground=colour3,
+        activeforeground=colour4,
+        highlightthickness=2,
+        highlightbackground=colour3,
+        highlightcolor='WHITE',
+        width=13,
+        height=2,
+        border=0,
+        cursor='hand1',
+        text='Back',
+        font=('ARIAL',20),
+        command=Back_to_menu
     )
 def Back_to_menu():
+    canvas.delete('all')
     main_frame.pack()
     
 window=tk.Tk()
