@@ -4,7 +4,7 @@ import tkinter as tk
 from PIL import Image,ImageTk
 
 GAME_WIDTH=700
-GAME_HEIGHT=700 
+GAME_HEIGHT=700
 MENU_WIDTH=350
 MENU_HEIGHT=600
 GAME_SPEED=150  
@@ -18,25 +18,7 @@ colour1='#020f12'
 colour2='#05d7ff'
 colour3='#65e7ff'
 colour4='BLACK'
-  
-def start_game():
-    global label    
-    global canvas
-    global window
-    main_frame.pack_forget()
-    label= Label(window,text="Score:{}".format(score), font=('ARIAL',40))
-    label.pack()
-    canvas= Canvas(window,bg=BACKGROUND_COLOUR,height=GAME_HEIGHT,width=GAME_WIDTH)
-    canvas.pack()
-    canvas.pack()
-    window.geometry(f"{GAME_WIDTH}x{GAME_HEIGHT+75}")
-    window.update()
-    snake = Snake()
-    food = Food()
-    next_move(snake, food)
-    
-def settings():
-    pass   
+     
 class Snake:
     def __init__(self):
         self.body_size=SNAKE_PARTS
@@ -58,7 +40,22 @@ class Food:
        self.coordinates=[x,y]
        canvas.create_oval(x,y, x+SPACE_SIZE, y+SPACE_SIZE, fill=FOOD_COLOUR, tag= 'food')
 
-
+def start_game():
+    global label    
+    global canvas
+    global window
+    main_frame.pack_forget()
+    label= Label(window,text="Score:{}".format(score), font=('ARIAL',40))
+    label.pack()
+    canvas= Canvas(window,bg=BACKGROUND_COLOUR,height=GAME_HEIGHT,width=GAME_WIDTH)
+    canvas.pack()
+    canvas.pack()
+    window.geometry(f"{GAME_WIDTH}x{GAME_HEIGHT+75}")
+    window.update()
+    snake = Snake()
+    food = Food()
+    next_move(snake, food)
+    
 def next_move(snake,food):
   x,y =snake.coordinates[0]
   
@@ -126,6 +123,7 @@ def check_collision(snake):
     return False
 
 def gameover():
+    
     canvas.delete(ALL)
     canvas.create_text(
         canvas.winfo_width() / 2, canvas.winfo_height() / 2 - 50,
@@ -172,8 +170,16 @@ def gameover():
         command=window.quit
     )
 
-    play_again_button.pack()
-    quit_button.pack()
+    play_again_button.pack(side='left')
+    quit_button.pack(side='right')
+    
+    global highscore
+    highscore_label = canvas.create_text(
+        canvas.winfo_width() / 2, canvas.winfo_height() / 2 + 50,
+        font=('ARIAL', 20),
+        text="Highscore: {}".format(highscore),
+        fill="white",
+        tag="highscore")
 
 def reset_game():
     canvas.pack_forget()
@@ -181,7 +187,7 @@ def reset_game():
     global direction
     score = 0
     direction = 'down'
-    GAME_SPEED = 100
+ 
     
     for widget in window.winfo_children():
         if isinstance(widget, tk.Button):
@@ -190,8 +196,35 @@ def reset_game():
     label.config(text="Score:{}".format(score))
     
     start_game()
-
-#Dostosowanie Okna
+    
+def settings():
+    main_frame.pack_forget()
+    settings_frame=tk.Frame(window,bg=colour1,pady=40)
+    settings_frame.pack(fill=tk.BOTH,expand=True)
+    settings_frame.columnconfigure(0,weight=1)
+    settings_frame.rowconfigure(0,weight=1)
+    settings_frame.rowconfigure(1,weight=1)
+    
+    Back_button=tk.Button(
+    settings_frame,
+    background=colour2,
+    foreground=colour4,
+    activebackground=colour3,
+    activeforeground=colour4,
+    highlightthickness=2,
+    highlightbackground=colour3,
+    highlightcolor='WHITE',
+    width=13,
+    height=2,
+    border=0,
+    cursor='hand1',
+    text='Back',
+    font=('ARIAL',20),
+    command=Back_to_menu
+    )
+def Back_to_menu():
+    main_frame.pack()
+    
 window=tk.Tk()
 window.title("Snake Game")
 window.geometry(f"{GAME_WIDTH}x{GAME_HEIGHT}")
