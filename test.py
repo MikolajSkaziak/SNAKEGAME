@@ -18,20 +18,16 @@ colour1='#020f12'
 colour2='#05d7ff'
 colour3='#65e7ff'
 colour4='BLACK'
-
-def on_button_click():
+  
+def start_game():
     global label    
     global canvas
-    
+    global window
+    main_frame.pack_forget()
     label= Label(window,text="Score:{}".format(score), font=('ARIAL',40))
     label.pack()
     canvas= Canvas(window,bg=BACKGROUND_COLOUR,height=GAME_HEIGHT,width=GAME_WIDTH)
     canvas.pack()
-    start_game()
-  
-def start_game():
-    global window
-    main_frame.pack_forget()
     canvas.pack()
     window.geometry(f"{GAME_WIDTH}x{GAME_HEIGHT+75}")
     window.update()
@@ -39,6 +35,8 @@ def start_game():
     food = Food()
     next_move(snake, food)
     
+def settings():
+    pass   
 class Snake:
     def __init__(self):
         self.body_size=SNAKE_PARTS
@@ -126,9 +124,73 @@ def check_collision(snake):
         if x==body_part[0] and y== body_part[1]:
             return True
     return False
+
 def gameover():
     canvas.delete(ALL)
-    canvas.create_text(canvas.winfo_width()/2,canvas.winfo_height()/2,font=('ARIAL',70),text="GAME OVER",fill="red",tag="gameover")
+    canvas.create_text(
+        canvas.winfo_width() / 2, canvas.winfo_height() / 2 - 50,
+        font=('ARIAL', 70),
+        text="GAME OVER",
+        fill="red",
+        tag="gameover")
+
+    play_again_button = tk.Button(
+        window,
+        background=colour2,
+        foreground=colour4,
+        activebackground=colour3,
+        activeforeground=colour4,
+        highlightthickness=2,
+        highlightbackground=colour3,
+        highlightcolor='WHITE',
+        width=13,
+        height=2,
+        border=0,
+        cursor='hand1',
+        text='Play Again',
+        font=('ARIAL', 20),
+        command=reset_game
+    )
+    
+    label.pack_forget()
+ 
+
+    quit_button = tk.Button(
+        window,
+        background='RED',
+        foreground=colour4,
+        activebackground=colour3,
+        activeforeground=colour4,
+        highlightthickness=2,
+        highlightbackground=colour3,
+        highlightcolor='WHITE',
+        width=13,
+        height=2,
+        border=0,
+        cursor='hand1',
+        text='Quit',
+        font=('ARIAL', 20),
+        command=window.quit
+    )
+
+    play_again_button.pack()
+    quit_button.pack()
+
+def reset_game():
+    canvas.pack_forget()
+    global score
+    global direction
+    score = 0
+    direction = 'down'
+    GAME_SPEED = 100
+    
+    for widget in window.winfo_children():
+        if isinstance(widget, tk.Button):
+            widget.destroy()
+   
+    label.config(text="Score:{}".format(score))
+    
+    start_game()
 
 #Dostosowanie Okna
 window=tk.Tk()
@@ -172,7 +234,7 @@ Play_button=tk.Button(
     cursor='hand1',
     text='Play',
     font=('ARIAL',20),
-    command=on_button_click
+    command=start_game
     )
 
 Quit_button=tk.Button(
@@ -208,7 +270,7 @@ Settings_button=tk.Button(
     cursor='hand1',
     text='Settings',
     font=('ARIAL',20),
-    command=on_button_click
+    command=settings
     )
 
 Play_button.grid(column=0,row=0)
