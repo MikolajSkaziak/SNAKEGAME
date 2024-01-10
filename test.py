@@ -188,6 +188,9 @@ def gameover():
     quit_button.pack(side='right')
     
     global highscore_label,highscore
+    if score > highscore:
+        highscore = score
+        update_highscore_file()
     highscore = read_highscore_file()
     highscore_label = canvas.create_text(
         canvas.winfo_width() / 2, canvas.winfo_height() / 2 + 50,
@@ -196,12 +199,7 @@ def gameover():
         fill="white",
         tag="highscore")
     
-    if score > highscore:
-        highscore = score
-        update_highscore_file()
-        
 
-    
 def reset_game():
     canvas.pack_forget()
     global direction
@@ -241,8 +239,7 @@ def settings():
         cursor='hand1',
         text='Back',
         font=('ARIAL',20),
-        command=Back_to_menu
-    )
+        command=Back_to_menu)
 def Back_to_menu():
     canvas.delete('all')
     main_frame.pack()
