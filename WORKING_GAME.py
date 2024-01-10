@@ -22,7 +22,7 @@ colour4='BLACK'
 available_resolutions = ["700x700", "800x800", "900x900"]
 current_resolution_index = 0
 current_resolution_label = None
-
+menu_background = None 
 
 def update_highscore_file():        
         with open("highscore.txt", "w") as file:
@@ -57,6 +57,12 @@ class Food:
        self.coordinates=[x,y]
        canvas.create_oval(x,y, x+SPACE_SIZE, y+SPACE_SIZE, fill=FOOD_COLOUR, tag= 'food')
 
+
+
+        
+        
+
+     
        
 
 def start_game():
@@ -360,14 +366,18 @@ def Back_to_menu():
     
 def Menu():
     global main_frame
-    
-    main_frame=tk.Frame(window,bg=colour1,pady=40)
+    global menu_background
+    main_frame=tk.Frame(window,bg='#96d201',pady=40)
     main_frame.pack(fill=tk.BOTH,expand=True)
     main_frame.columnconfigure(0,weight=1)
     main_frame.rowconfigure(0,weight=1)
     main_frame.rowconfigure(1,weight=1)
-    Menu_background=Label(main_frame,image=menu_background)
-    Menu_background.place(x=0,y=0)
+    menu_background=Image.open('C:\\Users\\skuzi\\Documents\\GitHub\\SNAKEGAME\\MENU_BACKGROUND.jpg')
+    menu_background=ImageTk.PhotoImage(menu_background)
+    Menu_background = Label(main_frame,bg='#96d201' ,image=menu_background, bd=0)
+    Menu_background.place(x=0, y=0, relwidth=1, relheight=1)
+    
+    
 
     Play_button=tk.Button(
         main_frame,
@@ -443,8 +453,6 @@ screen_height=window.winfo_screenheight()
 x=int((screen_width/2)-(window_width/2))
 y=int((screen_height/2)-(window_height/2))
 window.geometry(f"{window_width}x{window_height}+{x}+{y}")
-menu_background_image=Image.open('C:\\Users\\skuzi\\Documents\\GitHub\\SNAKEGAME\\MENU_BACKGROUND.jpg')
-menu_background=ImageTk.PhotoImage(menu_background_image)
 
 menu=Menu()
 
