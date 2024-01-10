@@ -241,7 +241,7 @@ def settings():
         highlightbackground=colour3,
         highlightcolor='WHITE',
         width=13,
-        height=2,
+        height=1,
         border=0,
         cursor='hand1',
         text='Back',
@@ -261,7 +261,7 @@ def settings():
         highlightbackground=colour3,
         highlightcolor='WHITE',
         width=5,
-        height=2,
+        height=1,
         border=0,
         cursor='hand1',
         text='<',
@@ -280,7 +280,7 @@ def settings():
         highlightbackground=colour3,
         highlightcolor='WHITE',
         width=5,
-        height=2,
+        height=1,
         border=0,
         cursor='hand1',
         text='>',
@@ -291,16 +291,39 @@ def settings():
     
     current_resolution_label = tk.Label(
         settings_frame,
-        text=f"Current Window Resolution: {window.winfo_width()}x{window.winfo_height()}",
+        text=f"Current Window Resolution: {available_resolutions[current_resolution_index]}",
         font=('ARIAL', 15),
         bg=colour1,
         fg=colour4
     )
     current_resolution_label.pack(pady=(20, 10))
 
+    # Dodanie przycisku "Zatwierdź"
+    confirm_button = tk.Button(
+        settings_frame,
+        background=colour2,
+        foreground=colour4,
+        activebackground=colour3,
+        activeforeground=colour4,
+        highlightthickness=2,
+        highlightbackground=colour3,
+        highlightcolor='WHITE',
+        width=8,
+        height=1,
+        border=0,
+        cursor='hand1',
+        text='Apply',
+        font=('ARIAL', 20),
+        command=confirm_resolution
+    )
+    confirm_button.pack(pady=(10, 20))
+
+    
+    
+    
     
 def apply_resolution(direction):
-    global current_resolution_index, current_resolution_label,width,height
+    global current_resolution_index, current_resolution_label,height,width
 
     if direction == "left":
         current_resolution_index = (current_resolution_index - 1) % len(available_resolutions)
@@ -308,9 +331,24 @@ def apply_resolution(direction):
         current_resolution_index = (current_resolution_index + 1) % len(available_resolutions)
 
     selected_resolution = available_resolutions[current_resolution_index]
+    current_resolution_label.config(text=f"Current Window Resolution: {selected_resolution}")
+    
+def confirm_resolution():
+
+    selected_resolution = available_resolutions[current_resolution_index]
     width, height = map(int, selected_resolution.split("x"))
     window.geometry(f"{width}x{height}")
     current_resolution_label.config(text=f"Current Window Resolution: {width}x{height}")
+    
+    window_width_after = window.winfo_screenwidth()
+    window_height_after = window.winfo_screenheight()
+    screen_width = width
+    screen_height = height
+    Position_left = int(window_width_after/2 - screen_width/2)
+    Position_Up = int(window_height_after/2 - screen_height/2)
+    
+    window.geometry(f"{screen_width}x{screen_height}+{Position_left}+{Position_Up}")
+    window.update()
     
 
 def Back_to_menu():
