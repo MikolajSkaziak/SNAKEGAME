@@ -247,22 +247,6 @@ def Back_to_menu():
     settings_frame.pack_forget()
     Menu()
     
-window=tk.Tk()
-window.title("Snake Game")
-window.geometry(f"{GAME_WIDTH}x{GAME_HEIGHT}")
-window.resizable(False, False)
-score=0
-direction='down'
-window.update()
-window_width=window.winfo_width()
-window_height=window.winfo_height()
-screen_width=window.winfo_screenwidth()
-screen_height=window.winfo_screenheight()
-x=int((screen_width/2)-(window_width/2))
-y=int((screen_height/2)-(window_height/2))
-window.geometry(f"{window_width}x{window_height}+{x}+{y}")
-menu_background_image=Image.open('C:\\Users\\skuzi\\Documents\\GitHub\\SNAKEGAME\\MENU_BACKGROUND.jpg')
-menu_background=ImageTk.PhotoImage(menu_background_image)
 def Menu():
     global main_frame
     
@@ -330,9 +314,28 @@ def Menu():
 
     Play_button.grid(column=0,row=0)
     Settings_button.grid(column=0,row=1)
-    Quit_button.grid(column=0,row=2)
-
+    Quit_button.grid(column=0,row=2)    
+    
+window=tk.Tk()
+window.title("Snake Game")
+window.geometry(f"{GAME_WIDTH}x{GAME_HEIGHT}")
+window.resizable(False, False)
+score=0
+direction='down'
+window.update()
+window_width=window.winfo_width()
+window_height=window.winfo_height()
+screen_width=window.winfo_screenwidth()
+screen_height=window.winfo_screenheight()
+x=int((screen_width/2)-(window_width/2))
+y=int((screen_height/2)-(window_height/2))
+window.geometry(f"{window_width}x{window_height}+{x}+{y}")
+menu_background_image=Image.open('C:\\Users\\skuzi\\Documents\\GitHub\\SNAKEGAME\\MENU_BACKGROUND.jpg')
+menu_background=ImageTk.PhotoImage(menu_background_image)
+    
+#Staring the programm    
 menu=Menu()
+
 #Przypisanie klawiszy:
 window.bind('<Left>',lambda event: change_direction('left'))
 window.bind('<Right>',lambda event: change_direction('right'))
