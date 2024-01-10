@@ -217,6 +217,7 @@ def reset_game():
 
     
 def settings():
+    global settings_frame
     main_frame.pack_forget()
     settings_frame=tk.Frame(window,bg=colour1,pady=40)
     settings_frame.pack(fill=tk.BOTH,expand=True)
@@ -240,9 +241,11 @@ def settings():
         text='Back',
         font=('ARIAL',20),
         command=Back_to_menu)
+    back_to_menu.grid(column=0, row=4)
+
 def Back_to_menu():
-    canvas.delete('all')
-    main_frame.pack()
+    settings_frame.pack_forget()
+    Menu()
     
 window=tk.Tk()
 window.title("Snake Game")
@@ -258,77 +261,78 @@ screen_height=window.winfo_screenheight()
 x=int((screen_width/2)-(window_width/2))
 y=int((screen_height/2)-(window_height/2))
 window.geometry(f"{window_width}x{window_height}+{x}+{y}")
-#Loading an Image:
 menu_background_image=Image.open('C:\\Users\\skuzi\\Documents\\GitHub\\SNAKEGAME\\MENU_BACKGROUND.jpg')
 menu_background=ImageTk.PhotoImage(menu_background_image)
+def Menu():
+    global main_frame
+    
+    main_frame=tk.Frame(window,bg=colour1,pady=40)
+    main_frame.pack(fill=tk.BOTH,expand=True)
+    main_frame.columnconfigure(0,weight=1)
+    main_frame.rowconfigure(0,weight=1)
+    main_frame.rowconfigure(1,weight=1)
+    Menu_background=Label(main_frame,image=menu_background)
+    Menu_background.place(x=0,y=0)
 
-main_frame=tk.Frame(window,bg=colour1,pady=40)
-main_frame.pack(fill=tk.BOTH,expand=True)
-main_frame.columnconfigure(0,weight=1)
-main_frame.rowconfigure(0,weight=1)
-main_frame.rowconfigure(1,weight=1)
-Menu_background=Label(main_frame,image=menu_background)
-Menu_background.place(x=0,y=0)
-
-Play_button=tk.Button(
-    main_frame,
-    background=colour2,
-    foreground=colour4,
-    activebackground=colour3,
-    activeforeground=colour4,
-    highlightthickness=2,
-    highlightbackground=colour3,
-    highlightcolor='WHITE',
-    width=13,
-    height=2,
-    border=0,
-    cursor='hand1',
-    text='Play',
-    font=('ARIAL',20),
-    command=start_game
+    Play_button=tk.Button(
+        main_frame,
+        background=colour2,
+        foreground=colour4,
+        activebackground=colour3,
+        activeforeground=colour4,
+        highlightthickness=2,
+        highlightbackground=colour3,
+        highlightcolor='WHITE',
+        width=13,
+        height=2,
+        border=0,
+        cursor='hand1',
+        text='Play',
+        font=('ARIAL',20),
+        command=start_game
     )
 
-Quit_button=tk.Button(
-    main_frame,
-    background='RED',
-    foreground=colour4,
-    activebackground=colour3,
-    activeforeground=colour4,
-    highlightthickness=2,
-    highlightbackground=colour3,
-    highlightcolor='WHITE',
-    width=13,
-    height=2,
-    border=0,
-    cursor='hand1',
-    text='Quit',
-    font=('ARIAL',20),
-    command=window.quit
+    Quit_button=tk.Button(
+        main_frame,
+        background='RED',
+        foreground=colour4,
+        activebackground=colour3,
+        activeforeground=colour4,
+        highlightthickness=2,
+        highlightbackground=colour3,
+        highlightcolor='WHITE',
+        width=13,
+        height=2,
+        border=0,
+        cursor='hand1',
+        text='Quit',
+        font=('ARIAL',20),
+        command=window.quit
     )
 
-Settings_button=tk.Button(
-    main_frame,
-    background=colour2,
-    foreground=colour4,
-    activebackground=colour3,
-    activeforeground=colour4,
-    highlightthickness=2,
-    highlightbackground=colour3,
-    highlightcolor='WHITE',
-    width=13,
-    height=2,
-    border=0,
-    cursor='hand1',
-    text='Settings',
-    font=('ARIAL',20),
-    command=settings
+    Settings_button=tk.Button(
+        main_frame,
+        background=colour2,
+        foreground=colour4,
+        activebackground=colour3,
+        activeforeground=colour4,
+        highlightthickness=2,
+        highlightbackground=colour3,
+        highlightcolor='WHITE',
+        width=13,
+        height=2,
+        border=0,
+        cursor='hand1',
+        text='Settings',
+        font=('ARIAL',20),
+        command=settings
     )
 
-Play_button.grid(column=0,row=0)
-Settings_button.grid(column=0,row=1)
-Quit_button.grid(column=0,row=2)
+    Play_button.grid(column=0,row=0)
+    Settings_button.grid(column=0,row=1)
+    Quit_button.grid(column=0,row=2)
 
-
+menu=Menu()
 #Przypisanie klawiszy:
 window.bind('<Left>',lambda event: change_direction('left'))
 window.bind('<Right>',lambda event: change_direction('right'))
