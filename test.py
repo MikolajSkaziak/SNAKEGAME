@@ -19,7 +19,7 @@ colour2='#05d7ff'
 colour3='#65e7ff'
 colour4='BLACK'
 
-available_resolutions = ["700x700", "800x800", "900x900"]  # Add or modify resolutions as needed
+available_resolutions = ["700x700", "800x800", "900x900"]
 current_resolution_index = 0
 current_resolution_label = None
 
@@ -224,14 +224,13 @@ def reset_game():
 def settings():
     global settings_frame, current_resolution_label
     main_frame.pack_forget()
-    settings_frame=tk.Frame(window,bg=colour1,pady=40)
-    settings_frame.pack(fill=tk.BOTH,expand=True)
-    settings_frame.columnconfigure(0,weight=1)
-    settings_frame.rowconfigure(0,weight=1)
-    settings_frame.rowconfigure(1,weight=1)
-    
-    
-    back_to_menu=tk.Button(
+    settings_frame = tk.Frame(window, bg=colour1, pady=40)
+    settings_frame.pack(fill=tk.BOTH, expand=True)
+    settings_frame.columnconfigure(0, weight=1)
+    settings_frame.rowconfigure(0, weight=1)
+    settings_frame.rowconfigure(1, weight=1)
+
+    back_to_menu = tk.Button(
         settings_frame,
         background=colour2,
         foreground=colour4,
@@ -245,14 +244,24 @@ def settings():
         border=0,
         cursor='hand1',
         text='Back',
-        font=('ARIAL',20),
+        font=('ARIAL', 20),
         command=Back_to_menu)
-    
     back_to_menu.pack(side='bottom', anchor=tk.S, pady=(10, 0))
 
-    
-    Leftarrow=tk.Button(
+    current_resolution_label = tk.Label(
         settings_frame,
+        text=f"Current Window Resolution: {available_resolutions[current_resolution_index]}",
+        font=('ARIAL', int(15 * (width / 700))), 
+        bg=colour1,
+        fg='white',
+    )
+    current_resolution_label.pack(pady=(20, 10))
+
+    resolution_buttons_frame = tk.Frame(settings_frame, bg=colour1)
+    resolution_buttons_frame.pack(pady=(10, 0))
+
+    Leftarrow = tk.Button(
+        resolution_buttons_frame,
         background=colour2,
         foreground=colour4,
         activebackground=colour3,
@@ -265,13 +274,15 @@ def settings():
         border=0,
         cursor='hand1',
         text='<',
-        font=('ARIAL',30),
-        command=lambda: apply_resolution("left"))  
-    
-    Leftarrow.pack(side='left')
-    
-    Rightarrow=tk.Button(
-        settings_frame,
+        font=('ARIAL', 30 ), 
+        command=lambda: apply_resolution("left"))
+    Leftarrow.pack(side='left', padx=(10, 5)) 
+
+  
+    tk.Label(resolution_buttons_frame, bg=colour1, width=1).pack(side='left')
+
+    Rightarrow = tk.Button(
+        resolution_buttons_frame,
         background=colour2,
         foreground=colour4,
         activebackground=colour3,
@@ -284,21 +295,13 @@ def settings():
         border=0,
         cursor='hand1',
         text='>',
-        font=('ARIAL',30),
+        font=('ARIAL', 30 ),
         command=lambda: apply_resolution("right"))
-    
-    Rightarrow.pack(side='right')
-    
-    current_resolution_label = tk.Label(
-        settings_frame,
-        text=f"Current Window Resolution: {available_resolutions[current_resolution_index]}",
-        font=('ARIAL', 15),
-        bg=colour1,
-        fg=colour4
-    )
-    current_resolution_label.pack(pady=(20, 10))
+    Rightarrow.pack(side='left', padx=(5, 10))  
 
-    # Dodanie przycisku "Zatwierdź"
+   
+    tk.Label(settings_frame, bg=colour1, height=1).pack()
+    
     confirm_button = tk.Button(
         settings_frame,
         background=colour2,
@@ -313,10 +316,10 @@ def settings():
         border=0,
         cursor='hand1',
         text='Apply',
-        font=('ARIAL', 20),
+        font=('ARIAL',20) ,
         command=confirm_resolution
     )
-    confirm_button.pack(pady=(10, 20))
+    confirm_button.pack()
     
 def apply_resolution(direction):
     global current_resolution_index, current_resolution_label,height,width
@@ -427,6 +430,8 @@ window.geometry(f"{GAME_WIDTH}x{GAME_HEIGHT}")
 window.resizable(False, False)
 score=0
 direction='down'
+height=GAME_HEIGHT
+width=GAME_WIDTH
 window.update()
 window_width=window.winfo_width()
 window_height=window.winfo_height()
