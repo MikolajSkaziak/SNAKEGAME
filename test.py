@@ -317,10 +317,6 @@ def settings():
         command=confirm_resolution
     )
     confirm_button.pack(pady=(10, 20))
-
-    
-    
-    
     
 def apply_resolution(direction):
     global current_resolution_index, current_resolution_label,height,width
@@ -334,6 +330,7 @@ def apply_resolution(direction):
     current_resolution_label.config(text=f"Current Window Resolution: {selected_resolution}")
     
 def confirm_resolution():
+    global height, width
 
     selected_resolution = available_resolutions[current_resolution_index]
     width, height = map(int, selected_resolution.split("x"))
@@ -420,9 +417,9 @@ def Menu():
         command=settings
     )
 
-    Play_button.grid(column=0,row=0)
-    Settings_button.grid(column=0,row=1)
-    Quit_button.grid(column=0,row=2)    
+    Play_button.pack(pady=50,  expand=True)
+    Settings_button.pack(pady=50, expand=True)
+    Quit_button.pack(pady=50, expand=True)
     
 window=tk.Tk()
 window.title("Snake Game")
