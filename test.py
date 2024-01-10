@@ -367,17 +367,16 @@ def Back_to_menu():
 def Menu():
     global main_frame
     
-    main_frame=tk.Frame(window,bg=colour1,pady=40)
+    main_frame=tk.Frame(window,bg=colour3,pady=40)
     main_frame.pack(fill=tk.BOTH,expand=True)
     main_frame.columnconfigure(0,weight=1)
     main_frame.rowconfigure(0,weight=1)
     main_frame.rowconfigure(1,weight=1)
-    menu_background_image = Image.open('C:\\Users\\skuzi\\Documents\\GitHub\\SNAKEGAME\\MENU_BACKGROUND.jpg')
-    menu_background = ImageTk.PhotoImage(menu_background_image)
-
-    Menu_background = tk.Label(main_frame, image=menu_background)
-    Menu_background.image = menu_background
-    Menu_background.place(x=0, y=0)
+    menu_background=Image.open('C:\\Users\\skuzi\\Documents\\GitHub\\SNAKEGAME\\MENU_BACKGROUND.png')
+    Menu_background=Label(main_frame,image=menu_background)
+    Menu_background.place(x=0,y=0)
+    
+    menu_background=ImageTk.PhotoImage(menu_background)
     
 
     Play_button=tk.Button(
