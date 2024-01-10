@@ -19,6 +19,11 @@ colour2='#05d7ff'
 colour3='#65e7ff'
 colour4='BLACK'
 
+available_resolutions = ["700x700", "800x800", "900x900"]  # Add or modify resolutions as needed
+current_resolution_index = 0
+current_resolution_label = None
+
+
 def update_highscore_file():        
         with open("highscore.txt", "w") as file:
             file.write(str(highscore))
@@ -47,8 +52,8 @@ class Food:
     
     def __init__(self):
         
-       x= random.randint(0,int(GAME_WIDTH / SPACE_SIZE)-1)*SPACE_SIZE 
-       y= random.randint(0,int(GAME_HEIGHT / SPACE_SIZE)-1)*SPACE_SIZE
+       x= random.randint(0,int(width / SPACE_SIZE)-1)*SPACE_SIZE 
+       y= random.randint(0,int(height / SPACE_SIZE)-1)*SPACE_SIZE
        self.coordinates=[x,y]
        canvas.create_oval(x,y, x+SPACE_SIZE, y+SPACE_SIZE, fill=FOOD_COLOUR, tag= 'food')
 
@@ -61,10 +66,10 @@ def start_game():
     main_frame.pack_forget()
     label= Label(window,text="Score:{}".format(score), font=('ARIAL',40))
     label.pack()
-    canvas= Canvas(window,bg=BACKGROUND_COLOUR,height=GAME_HEIGHT,width=GAME_WIDTH)
+    canvas= Canvas(window,bg=BACKGROUND_COLOUR,height=height,width=width)
     canvas.pack()
     canvas.pack()
-    window.geometry(f"{GAME_WIDTH}x{GAME_HEIGHT+75}")
+    window.geometry(f"{width}x{height+75}")
     window.update()
     snake = Snake()
     food = Food()
@@ -126,10 +131,10 @@ def check_collision(snake):
     
     x,y=snake.coordinates[0]
     
-    if x<0 or x>= GAME_WIDTH:
+    if x<0 or x>= width:
         return True 
     
-    elif y<0 or y>=GAME_HEIGHT:
+    elif y<0 or y>=height:
         return True     
     for body_part in snake.coordinates[1:]:
         if x==body_part[0] and y== body_part[1]:
@@ -217,13 +222,14 @@ def reset_game():
 
     
 def settings():
-    global settings_frame
+    global settings_frame, current_resolution_label
     main_frame.pack_forget()
     settings_frame=tk.Frame(window,bg=colour1,pady=40)
     settings_frame.pack(fill=tk.BOTH,expand=True)
     settings_frame.columnconfigure(0,weight=1)
     settings_frame.rowconfigure(0,weight=1)
     settings_frame.rowconfigure(1,weight=1)
+    
     
     back_to_menu=tk.Button(
         settings_frame,
@@ -241,7 +247,71 @@ def settings():
         text='Back',
         font=('ARIAL',20),
         command=Back_to_menu)
-    back_to_menu.grid(column=0, row=4)
+    
+    back_to_menu.pack(side='bottom', anchor=tk.S, pady=(10, 0))
+
+    
+    Leftarrow=tk.Button(
+        settings_frame,
+        background=colour2,
+        foreground=colour4,
+        activebackground=colour3,
+        activeforeground=colour4,
+        highlightthickness=2,
+        highlightbackground=colour3,
+        highlightcolor='WHITE',
+        width=5,
+        height=2,
+        border=0,
+        cursor='hand1',
+        text='<',
+        font=('ARIAL',30),
+        command=lambda: apply_resolution("left"))  
+    
+    Leftarrow.pack(side='left')
+    
+    Rightarrow=tk.Button(
+        settings_frame,
+        background=colour2,
+        foreground=colour4,
+        activebackground=colour3,
+        activeforeground=colour4,
+        highlightthickness=2,
+        highlightbackground=colour3,
+        highlightcolor='WHITE',
+        width=5,
+        height=2,
+        border=0,
+        cursor='hand1',
+        text='>',
+        font=('ARIAL',30),
+        command=lambda: apply_resolution("right"))
+    
+    Rightarrow.pack(side='right')
+    
+    current_resolution_label = tk.Label(
+        settings_frame,
+        text=f"Current Window Resolution: {window.winfo_width()}x{window.winfo_height()}",
+        font=('ARIAL', 15),
+        bg=colour1,
+        fg=colour4
+    )
+    current_resolution_label.pack(pady=(20, 10))
+
+    
+def apply_resolution(direction):
+    global current_resolution_index, current_resolution_label,width,height
+
+    if direction == "left":
+        current_resolution_index = (current_resolution_index - 1) % len(available_resolutions)
+    elif direction == "right":
+        current_resolution_index = (current_resolution_index + 1) % len(available_resolutions)
+
+    selected_resolution = available_resolutions[current_resolution_index]
+    width, height = map(int, selected_resolution.split("x"))
+    window.geometry(f"{width}x{height}")
+    current_resolution_label.config(text=f"Current Window Resolution: {width}x{height}")
+    
 
 def Back_to_menu():
     settings_frame.pack_forget()
