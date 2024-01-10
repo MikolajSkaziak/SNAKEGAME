@@ -16,7 +16,7 @@ BACKGROUND_COLOUR="black"
 
 colour1='#020f12'
 colour2='#05d7ff'
-colour3='#65e7ff'
+colour3='greenyellow'
 colour4='BLACK'
 
 available_resolutions = ["700x700", "800x800", "900x900"]
@@ -56,6 +56,8 @@ class Food:
        y= random.randint(0,int(height / SPACE_SIZE)-1)*SPACE_SIZE
        self.coordinates=[x,y]
        canvas.create_oval(x,y, x+SPACE_SIZE, y+SPACE_SIZE, fill=FOOD_COLOUR, tag= 'food')
+
+       
 
 def start_game():
     global label    
@@ -142,6 +144,7 @@ def check_collision(snake):
     return False
 
 def gameover():
+    global highscore_label, highscore
     
     canvas.delete(ALL)
     canvas.create_text(
@@ -153,7 +156,7 @@ def gameover():
 
     play_again_button = tk.Button(
        window,
-        background=colour2,
+        background='Green',
         foreground=colour4,
         activebackground=colour3,
         activeforeground=colour4,
@@ -175,10 +178,10 @@ def gameover():
         window,
         background='RED',
         foreground=colour4,
-        activebackground=colour3,
+        activebackground='lightcoral',
         activeforeground=colour4,
         highlightthickness=2,
-        highlightbackground=colour3,
+        highlightbackground='lightcoral',
         highlightcolor='WHITE',
         width=13,
         height=2,
@@ -232,7 +235,7 @@ def settings():
 
     back_to_menu = tk.Button(
         settings_frame,
-        background=colour2,
+        background='Green',
         foreground=colour4,
         activebackground=colour3,
         activeforeground=colour4,
@@ -262,7 +265,7 @@ def settings():
 
     Leftarrow = tk.Button(
         resolution_buttons_frame,
-        background=colour2,
+        background='Green',
         foreground=colour4,
         activebackground=colour3,
         activeforeground=colour4,
@@ -283,7 +286,7 @@ def settings():
 
     Rightarrow = tk.Button(
         resolution_buttons_frame,
-        background=colour2,
+        background='Green',
         foreground=colour4,
         activebackground=colour3,
         activeforeground=colour4,
@@ -304,7 +307,7 @@ def settings():
     
     confirm_button = tk.Button(
         settings_frame,
-        background=colour2,
+        background='Green',
         foreground=colour4,
         activebackground=colour3,
         activeforeground=colour4,
@@ -368,7 +371,7 @@ def Menu():
 
     Play_button=tk.Button(
         main_frame,
-        background=colour2,
+        background='Green',
         foreground=colour4,
         activebackground=colour3,
         activeforeground=colour4,
@@ -388,7 +391,7 @@ def Menu():
         main_frame,
         background='RED',
         foreground=colour4,
-        activebackground=colour3,
+        activebackground='lightcoral',
         activeforeground=colour4,
         highlightthickness=2,
         highlightbackground=colour3,
@@ -404,7 +407,7 @@ def Menu():
 
     Settings_button=tk.Button(
         main_frame,
-        background=colour2,
+        background='Green',
         foreground=colour4,
         activebackground=colour3,
         activeforeground=colour4,
@@ -442,8 +445,7 @@ y=int((screen_height/2)-(window_height/2))
 window.geometry(f"{window_width}x{window_height}+{x}+{y}")
 menu_background_image=Image.open('C:\\Users\\skuzi\\Documents\\GitHub\\SNAKEGAME\\MENU_BACKGROUND.jpg')
 menu_background=ImageTk.PhotoImage(menu_background_image)
-    
-#Staring the programm    
+
 menu=Menu()
 
 #Przypisanie klawiszy:
