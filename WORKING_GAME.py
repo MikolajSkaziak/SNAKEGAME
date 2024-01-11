@@ -22,9 +22,20 @@ colour4='BLACK'
 available_resolutions = ["700x700", "800x800", "900x900"]
 current_resolution_index = 0
 current_resolution_label = None
-menu_background = None 
 
 
+def update_highscore_file():        
+        with open("highscore.txt", "w") as file:
+            file.write(str(highscore))
+
+def read_highscore_file():
+    try:
+        with open("highscore.txt", "r") as file:
+            return int(file.read())
+    except FileNotFoundError:
+        return 0  
+highscore = read_highscore_file()
+highscore_label = None
 class Snake:
     def __init__(self):
         self.body_size=SNAKE_PARTS
@@ -46,24 +57,7 @@ class Food:
        self.coordinates=[x,y]
        canvas.create_oval(x,y, x+SPACE_SIZE, y+SPACE_SIZE, fill=FOOD_COLOUR, tag= 'food')
 
-
-
-
-
-def update_highscore_file():        
-        with open("highscore.txt", "w") as file:
-            file.write(str(highscore))
-
-def read_highscore_file():
-    try:
-        with open("highscore.txt", "r") as file:
-            return int(file.read())
-    except FileNotFoundError:
-        return 0  
-    
-highscore = read_highscore_file()
-highscore_label = None        
-        
+       
 
 def start_game():
     global label, canvas, window, score
@@ -372,9 +366,9 @@ def Back_to_menu():
     Menu()
     
 def Menu():
-    global main_frame, menu_background
+    global main_frame
     
-    main_frame=tk.Frame(window,bg='#96d201',pady=40)
+    main_frame=tk.Frame(window,bg=colour1,pady=40)
     main_frame.pack(fill=tk.BOTH,expand=True)
     main_frame.columnconfigure(0,weight=1)
     main_frame.rowconfigure(0,weight=1)
