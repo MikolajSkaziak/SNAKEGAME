@@ -22,20 +22,9 @@ colour4='BLACK'
 available_resolutions = ["700x700", "800x800", "900x900"]
 current_resolution_index = 0
 current_resolution_label = None
+menu_background = None 
 
 
-def update_highscore_file():        
-        with open("highscore.txt", "w") as file:
-            file.write(str(highscore))
-
-def read_highscore_file():
-    try:
-        with open("highscore.txt", "r") as file:
-            return int(file.read())
-    except FileNotFoundError:
-        return 0  
-highscore = read_highscore_file()
-highscore_label = None
 class Snake:
     def __init__(self):
         self.body_size=SNAKE_PARTS
@@ -48,6 +37,7 @@ class Snake:
         for x,y in self.coordinates:
              square = canvas.create_rectangle(x,y,x+SPACE_SIZE,y+SPACE_SIZE, fill=SNAKE_COLOUR, tag='snake')
              self.squares.append(square)
+             
 class Food:
     
     def __init__(self):
@@ -57,24 +47,47 @@ class Food:
        self.coordinates=[x,y]
        canvas.create_oval(x,y, x+SPACE_SIZE, y+SPACE_SIZE, fill=FOOD_COLOUR, tag= 'food')
 
+
+
+        
+        
+ 
+def update_highscore_file():        
+        with open("highscore.txt", "w") as file:
+            file.write(str(highscore))
+
+def read_highscore_file():
+    try:
+        with open("highscore.txt", "r") as file:
+            return int(file.read())
+    except FileNotFoundError:
+        return 0  
+highscore = read_highscore_file()
+highscore_label = None    
        
 
 def start_game():
+    
     global label, canvas, window, score
+    
     score=0
     main_frame.pack_forget()
+    
     label= Label(window,text="Score:{}".format(score), font=('ARIAL',40))
     label.pack()
+    
     canvas= Canvas(window,bg=BACKGROUND_COLOUR,height=height,width=width)
     canvas.pack()
-    canvas.pack()
+    
     window.geometry(f"{width}x{height+75}")
     window.update()
+    
     snake = Snake()
     food = Food()
     next_move(snake, food)
     
 def next_move(snake,food):
+    
   x,y =snake.coordinates[0]
   
   if direction=="up":
@@ -108,7 +121,9 @@ def next_move(snake,food):
   else:
       window.after(GAME_SPEED,next_move,snake,food)    
   
+  
 def change_direction(new_direction):
+    
     global direction
     
     if new_direction=='left':
@@ -143,6 +158,7 @@ def check_collision(snake):
     return False
 
 def gameover():
+    
     global highscore_label, highscore
     
     canvas.delete(ALL)
@@ -151,8 +167,7 @@ def gameover():
         font=('ARIAL', 70),
         text="GAME OVER",
         fill="red",
-        tag="gameover",
-        )
+        tag="gameover")
     
     label.pack_forget()
 
@@ -173,7 +188,7 @@ def gameover():
         font=('ARIAL', 20),
         command=reset_game
     )
-    
+    play_again_button.pack(side='left')
     
     quit_button = tk.Button(
         window,
@@ -192,8 +207,6 @@ def gameover():
         font=('ARIAL', 20),
         command=window.quit
     )
-
-    play_again_button.pack(side='left')
     quit_button.pack(side='right')
     
     global highscore_label,highscore
@@ -201,8 +214,8 @@ def gameover():
     if score > highscore:
         highscore = score
         update_highscore_file()
+        
     highscore = read_highscore_file()
-    
     highscore_label = canvas.create_text(
         canvas.winfo_width() / 2, canvas.winfo_height() / 2 + 50,
         font=('ARIAL', 20),
@@ -212,8 +225,11 @@ def gameover():
     
 
 def reset_game():
-    canvas.pack_forget()
+    
     global direction
+    
+    canvas.pack_forget()
+    
     score = 0
     direction = 'down'
     
@@ -253,10 +269,10 @@ def settings():
         cursor='hand1',
         text='Back',
         font=('ARIAL', 20),
-        command=Back_to_menu
-        )
-    back_to_menu.pack(side='bottom', anchor=tk.S, pady=(10, 0))
-
+        command=Back_to_menu)
+    back_to_menu.pack(side='bottom', anchor=tk.S, pady=(10, 0)
+    )
+    
     current_resolution_label = tk.Label(
         settings_frame,
         text=f"Current Window Resolution: {available_resolutions[current_resolution_index]}",
@@ -287,6 +303,7 @@ def settings():
         command=lambda: apply_resolution("left")
         )
     Leftarrow.pack(side='left', padx=(10, 5)) 
+
   
     tk.Label(resolution_buttons_frame, bg=colour1, width=1).pack(side='left')
 
@@ -305,8 +322,7 @@ def settings():
         cursor='hand1',
         text='>',
         font=('ARIAL', 20 ),
-        command=lambda: apply_resolution("right")
-        )
+        command=lambda: apply_resolution("right"))
     Rightarrow.pack(side='left', padx=(5, 10))  
 
    
@@ -366,9 +382,9 @@ def Back_to_menu():
     Menu()
     
 def Menu():
-    global main_frame
     
-    main_frame=tk.Frame(window,bg=colour1,pady=40)
+    global main_frame, menu_background
+    main_frame=tk.Frame(window,bg='#96d201',pady=40)
     main_frame.pack(fill=tk.BOTH,expand=True)
     main_frame.columnconfigure(0,weight=1)
     main_frame.rowconfigure(0,weight=1)
@@ -377,7 +393,6 @@ def Menu():
     menu_background=ImageTk.PhotoImage(menu_background)
     Menu_background = Label(main_frame,bg='#96d201' ,image=menu_background, bd=0)
     Menu_background.place(x=0, y=0, relwidth=1, relheight=1)
-    
     
 
     Play_button=tk.Button(
@@ -433,7 +448,6 @@ def Menu():
         font=('ARIAL',20),
         command=settings
     )
-
     Play_button.pack(pady=50,  expand=True)
     Settings_button.pack(pady=50, expand=True)
     Quit_button.pack(pady=50, expand=True)
