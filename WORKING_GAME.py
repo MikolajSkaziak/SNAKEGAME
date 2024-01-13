@@ -5,8 +5,6 @@ from PIL import Image,ImageTk
 
 GAME_WIDTH=700
 GAME_HEIGHT=700
-MENU_WIDTH=350
-MENU_HEIGHT=600
 GAME_SPEED=150  
 SPACE_SIZE=35
 SNAKE_PARTS=3
@@ -67,8 +65,10 @@ def read_highscore_file():
     try:
         with open("highscore.txt", "r") as file:
             return int(file.read())
+        
     except FileNotFoundError:
         return 0  
+    
 highscore = read_highscore_file()
 highscore_label = None    
        
@@ -342,7 +342,8 @@ def settings():
         cursor='hand1',
         text='>',
         font=('ARIAL', 20 ),
-        command=lambda: apply_resolution("right"))
+        command=lambda: apply_resolution("right")
+        )
     Rightarrow.pack(side='left', padx=(5, 10))  
 
    
@@ -368,6 +369,7 @@ def settings():
     confirm_button.pack()
     
 def apply_resolution(direction):
+    
     global current_resolution_index, current_resolution_label,height,width
 
     if direction == "left":
@@ -379,6 +381,7 @@ def apply_resolution(direction):
     current_resolution_label.config(text=f"Current Window Resolution: {selected_resolution}")
     
 def confirm_resolution():
+    
     global height, width
 
     selected_resolution = available_resolutions[current_resolution_index]
@@ -392,12 +395,14 @@ def confirm_resolution():
     screen_height = height
     Position_left = int(window_width_after/2 - screen_width/2)
     Position_Up = int(window_height_after/2 - screen_height/2)
-    
-    window.geometry(f"{screen_width}x{screen_height}+{Position_left}+{Position_Up-75}")
+    if height < 900:
+        window.geometry(f"{screen_width}x{screen_height}+{Position_left}+{Position_Up}")
+    else: 
+        window.geometry(f"{screen_width}x{screen_height}+{Position_left}+{Position_Up-50}")
     window.update()
     
-
 def Back_to_menu():
+    
     settings_frame.pack_forget()
     Menu()
     
