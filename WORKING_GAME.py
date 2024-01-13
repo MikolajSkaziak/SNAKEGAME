@@ -20,7 +20,7 @@ colour2='#05d7ff'
 colour3='greenyellow'
 colour4='BLACK'
 
-available_resolutions = ["700x700", "800x800", "900x900"]
+available_resolutions = ["700x700", "800x800", "900x900","1280x960"]
 current_resolution_index = 0
 current_resolution_label = None
 menu_background = None 
@@ -393,7 +393,7 @@ def confirm_resolution():
     Position_left = int(window_width_after/2 - screen_width/2)
     Position_Up = int(window_height_after/2 - screen_height/2)
     
-    window.geometry(f"{screen_width}x{screen_height}+{Position_left}+{Position_Up}")
+    window.geometry(f"{screen_width}x{screen_height}+{Position_left}+{Position_Up-75}")
     window.update()
     
 
