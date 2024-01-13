@@ -10,7 +10,8 @@ MENU_HEIGHT=600
 GAME_SPEED=150  
 SPACE_SIZE=35
 SNAKE_PARTS=3
-SNAKE_COLOUR="blue"
+SNAKE_COLOUR="GREEN"
+SNAKE_COLOUR_HEAD="greenyellow"
 FOOD_COLOUR="red"
 BACKGROUND_COLOUR="black"
 
@@ -27,17 +28,23 @@ menu_background = None
 
 class Snake:
     def __init__(self):
-        self.body_size=SNAKE_PARTS
-        self.coordinates=[]
-        self.squares=[]
-        
-        for i in range(0,SNAKE_PARTS):
+        self.body_size = SNAKE_PARTS
+        self.coordinates = []
+        self.squares = []
+
+        for i in range(0, SNAKE_PARTS):
             self.coordinates.append([0, 0])
-            
-        for x,y in self.coordinates:
-             square = canvas.create_rectangle(x,y,x+SPACE_SIZE,y+SPACE_SIZE, fill=SNAKE_COLOUR, tag='snake')
-             self.squares.append(square)
-             
+
+        for i, (x, y) in enumerate(self.coordinates):
+            fill_color = SNAKE_COLOUR if i == 0 else SNAKE_COLOUR_HEAD
+            square = canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=fill_color, tag='snake')
+            self.squares.append(square)
+
+    def update_head_color(self):
+        if not self.head_colored:
+            canvas.itemconfig(self.squares[0], fill=SNAKE_COLOUR_HEAD)
+            self.head_colored = True
+
 class Food:
     
     def __init__(self):
@@ -86,42 +93,52 @@ def start_game():
     food = Food()
     next_move(snake, food)
     
-def next_move(snake,food):
-    
-  x,y =snake.coordinates[0]
-  
-  if direction=="up":
-      y-=SPACE_SIZE
-  elif direction=="down":
-      y+=SPACE_SIZE
-  elif direction=="left":
-      x-=SPACE_SIZE
-  elif direction=="right":    
-      x+=SPACE_SIZE
-   
-  snake.coordinates.insert(0,(x,y))  
-  square=canvas.create_rectangle(x,y,x+SPACE_SIZE,y+SPACE_SIZE,fill=SNAKE_COLOUR)  
-  snake.squares.insert(0,square)
-  
-  global GAME_SPEED
-  
-  if x==food.coordinates[0] and y==food.coordinates[1]:
-      global score
-      score+=1      
-      label.config(text="Score:{}".format(score))
-      canvas.delete("food")
-      food=Food()
-      GAME_SPEED-=2
-  else:
-     del snake.coordinates[-1]
-     canvas.delete(snake.squares[-1])
-     del snake.squares[-1]
-  if check_collision(snake):
-     gameover()
-  else:
-      window.after(GAME_SPEED,next_move,snake,food)    
-  
-  
+def next_move(snake, food):
+
+    x, y = snake.coordinates[0]
+
+    if direction == "up":
+        y -= SPACE_SIZE
+    elif direction == "down":
+        y += SPACE_SIZE
+    elif direction == "left":
+        x -= SPACE_SIZE
+    elif direction == "right":
+        x += SPACE_SIZE
+
+    snake.coordinates.insert(0, (x, y))
+    square = canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=SNAKE_COLOUR_HEAD)
+    snake.squares.insert(0, square)
+
+    global GAME_SPEED
+
+    if x == food.coordinates[0] and y == food.coordinates[1]:
+        global score
+        score += 1
+        label.config(text="Score:{}".format(score))
+        canvas.delete("food")
+        food = Food()
+        GAME_SPEED -= 2
+        
+    else:
+        
+        for i in range(len(snake.squares)):
+            if i == 0:
+                canvas.itemconfig(snake.squares[i], fill=SNAKE_COLOUR_HEAD)
+            else:
+                canvas.itemconfig(snake.squares[i], fill=SNAKE_COLOUR)
+
+        del snake.coordinates[-1]
+        canvas.delete(snake.squares[-1])
+        del snake.squares[-1]
+
+    if check_collision(snake):
+        gameover()
+        
+    else:
+        window.after(GAME_SPEED, next_move, snake, food)
+        
+        
 def change_direction(new_direction):
     
     global direction
@@ -152,9 +169,12 @@ def check_collision(snake):
     
     elif y<0 or y>=height:
         return True     
+    
     for body_part in snake.coordinates[1:]:
+        
         if x==body_part[0] and y== body_part[1]:
             return True
+        
     return False
 
 def gameover():
