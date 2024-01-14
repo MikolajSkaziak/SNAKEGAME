@@ -467,7 +467,7 @@ def confirm_resolution():
     selected_resolution = available_resolutions[current_resolution_index]
     width, height = map(int, selected_resolution.split("x"))
     
-    # Set the window geometry and update
+    # Set the window geometry and update the resolution
     window.geometry(f"{width}x{height}")
     current_resolution_label.config(text=f"Current Window Resolution: {width}x{height}")
     Centering_window()
