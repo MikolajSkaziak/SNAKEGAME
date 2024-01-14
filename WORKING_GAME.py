@@ -2,6 +2,7 @@
 from tkinter import *
 import random
 import tkinter as tk
+from tkinter import messagebox
 from PIL import Image,ImageTk
 
 # Define constants and configurations for the game
@@ -74,10 +75,13 @@ def update_highscore_file():
 def read_highscore_file():
     try:
         with open("highscore.txt", "r") as file:
-            return int(file.read())
-        
+            content = file.read()
+            if content.strip(): 
+                return int(content)
+            else:
+                return 0
     except FileNotFoundError:
-        return 0  
+        return 0
     
 # Initialize highscore and related UI elements    
 highscore = read_highscore_file()
@@ -411,9 +415,36 @@ def settings():
         font=('ARIAL',20) ,
         command=confirm_resolution
     )
-    confirm_button.pack()
+    confirm_button.pack(pady=(0,100))
     
-# Function to navigate and apply resolutions    
+    reset_highestscore_button = tk.Button(
+        settings_frame,
+        background='Green',
+        foreground=colour4,
+        activebackground=colour3,
+        activeforeground=colour4,
+        highlightthickness=2,
+        highlightbackground=colour3,
+        highlightcolor='WHITE',
+        width=15,
+        height=1,
+        border=0,
+        cursor='hand1',
+        text='Reset highest score',
+        font=('ARIAL',20) ,
+        command=reset_highest_score
+    )
+    reset_highestscore_button.pack(pady=(0,100))
+    
+# Function to reset highest score
+def reset_highest_score():
+    response = messagebox.askyesno("Potwierdzenie", "Czy na pewno chcesz zresetować najwyższy wynik?")
+    
+    if response:
+        with open("highscore.txt", "w") as file:
+            pass 
+         
+# Function to navigate and apply resolutions   
 def apply_resolution(direction):
     
     global current_resolution_index, current_resolution_label,height,width
