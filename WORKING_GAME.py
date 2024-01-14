@@ -235,7 +235,7 @@ def gameover():
         width=13,
         height=2,
         border=0,
-        cursor='hand1',
+        cursor='hand2',
         text='Play Again',
         font=('ARIAL', 20),
         command=reset_game
@@ -257,7 +257,7 @@ def gameover():
         width=13,
         height=2,
         border=0,
-        cursor='hand1',
+        cursor='hand2',
         text='Quit',
         font=('ARIAL', 20),
         command=window.quit
@@ -331,7 +331,7 @@ def settings():
         width=13,
         height=1,
         border=0,
-        cursor='hand1',
+        cursor='hand2',
         text='Back',
         font=('ARIAL', 20),
         command=Back_to_menu)
@@ -365,7 +365,7 @@ def settings():
         width=5,
         height=1,
         border=0,
-        cursor='hand1',
+        cursor='hand2',
         text='<',
         font=('ARIAL', 20 ), 
         command=lambda: apply_resolution("left")
@@ -387,7 +387,7 @@ def settings():
         width=5,
         height=1,
         border=0,
-        cursor='hand1',
+        cursor='hand2',
         text='>',
         font=('ARIAL', 20 ),
         command=lambda: apply_resolution("right")
@@ -410,13 +410,14 @@ def settings():
         width=8,
         height=1,
         border=0,
-        cursor='hand1',
+        cursor='hand2',
         text='Apply',
         font=('ARIAL',20) ,
         command=confirm_resolution
     )
-    confirm_button.pack(pady=(0,100))
+    confirm_button.pack(pady=(0,150))
     
+    # Create button to reset the highest score
     reset_highestscore_button = tk.Button(
         settings_frame,
         background='Green',
@@ -426,20 +427,19 @@ def settings():
         highlightthickness=2,
         highlightbackground=colour3,
         highlightcolor='WHITE',
-        width=15,
+        width=17,
         height=1,
         border=0,
-        cursor='hand1',
+        cursor='hand2',
         text='Reset highest score',
         font=('ARIAL',20) ,
         command=reset_highest_score
     )
-    reset_highestscore_button.pack(pady=(0,100))
+    reset_highestscore_button.pack(pady=(0,150))
     
 # Function to reset highest score
 def reset_highest_score():
-    response = messagebox.askyesno("Potwierdzenie", "Czy na pewno chcesz zresetować najwyższy wynik?")
-    
+    response = messagebox.askyesno("Confirmation", "Are you sure you want to reset the highest score?")
     if response:
         with open("highscore.txt", "w") as file:
             pass 
@@ -462,7 +462,7 @@ def apply_resolution(direction):
 def confirm_resolution():
     
     global height, width
-    # Get the selected resolution
+    
     selected_resolution = available_resolutions[current_resolution_index]
     width, height = map(int, selected_resolution.split("x"))
     
@@ -519,7 +519,7 @@ def Menu():
         width=13,
         height=2,
         border=0,
-        cursor='hand1',
+        cursor='hand2',
         text='Play',
         font=('ARIAL',20),
         command=start_game
@@ -537,7 +537,7 @@ def Menu():
         width=13,
         height=2,
         border=0,
-        cursor='hand1',
+        cursor='hand2',
         text='Quit',
         font=('ARIAL',20),
         command=window.quit
@@ -555,7 +555,7 @@ def Menu():
         width=13,
         height=2,
         border=0,
-        cursor='hand1',
+        cursor='hand2',
         text='Settings',
         font=('ARIAL',20),
         command=settings
