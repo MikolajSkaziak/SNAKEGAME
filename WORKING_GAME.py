@@ -299,6 +299,7 @@ def reset_game():
             
     # Update and display the score label
     label.config(text="Score:{}".format(score))
+    
     # Start the game again 
     start_game()
     
@@ -470,6 +471,7 @@ def confirm_resolution():
     window.geometry(f"{width}x{height}")
     current_resolution_label.config(text=f"Current Window Resolution: {width}x{height}")
     Centering_window()
+    
 # Center the window on the screen
 def Centering_window():    
     window_width = window.winfo_screenwidth()
@@ -487,21 +489,25 @@ def Centering_window():
 def Back_to_menu():
     # Hide the settings frame to go back to the main menu
     settings_frame.pack_forget()
+    
     # Call the main menu function
     Menu()
     
 def Menu():
     
     global main_frame, menu_background
+    
     # Create the main frame for the menu
     main_frame=tk.Frame(window,bg='#96d201',pady=40)
     main_frame.pack(fill=tk.BOTH,expand=True)
     main_frame.columnconfigure(0,weight=1)
     main_frame.rowconfigure(0,weight=1)
     main_frame.rowconfigure(1,weight=1)
+    
     # Load the menu background image
     menu_background=Image.open('MENU_BACKGROUND.jpg')
     menu_background=ImageTk.PhotoImage(menu_background)
+    
     # Display the menu background
     Menu_background = Label(main_frame,bg='#96d201' ,image=menu_background, bd=0)
     Menu_background.place(x=0, y=0, relwidth=1, relheight=1)
@@ -564,21 +570,27 @@ def Menu():
     Play_button.pack(pady=50,  expand=True)
     Settings_button.pack(pady=50, expand=True)
     Quit_button.pack(pady=50, expand=True)
+    
 # Create the main window    
 window=tk.Tk()
 window.title("Snake Game")
+
 # Set the initial window size and make it non-resizable
 window.geometry(f"{GAME_WIDTH}x{GAME_HEIGHT}")
 window.resizable(False, False)
+
 # Initialize game variables
 score=0
 direction='down'
 height=GAME_HEIGHT
 width=GAME_WIDTH
+
 # Update the window to get accurate dimensions
 window.update()
+
 # Center the window on the screen
 Centering_window()
+
 # Initialize the menu
 menu=Menu()
 
@@ -587,5 +599,6 @@ window.bind('<Left>',lambda event: change_direction('left'))
 window.bind('<Right>',lambda event: change_direction('right'))
 window.bind('<Down>',lambda event: change_direction('down'))
 window.bind('<Up>',lambda event: change_direction('up'))
+
 # Start the Tkinter main loop
 window.mainloop()
