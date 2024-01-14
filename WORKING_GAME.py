@@ -278,7 +278,7 @@ def gameover():
     highscore_label = canvas.create_text(
         canvas.winfo_width() / 2, canvas.winfo_height() / 2 + 50,
         font=('ARIAL', 20),
-        text="Highscore: {}".format(highscore),
+        text="BEST SCORE: {}".format(highscore),
         fill="white",
         tag="highscore")
     
@@ -432,7 +432,7 @@ def settings():
         height=1,
         border=0,
         cursor='hand2',
-        text='Reset highest score',
+        text='Reset BEST SCORE',
         font=('ARIAL',20) ,
         command=reset_highest_score
     )
@@ -440,7 +440,7 @@ def settings():
     
 # Function to reset highest score
 def reset_highest_score():
-    response = messagebox.askyesno("Confirmation", "Are you sure you want to reset the highest score?")
+    response = messagebox.askyesno("Confirmation", "Are you sure you want to reset the BEST SCORE?")
     if response:
         with open("highscore.txt", "w") as file:
             pass 
