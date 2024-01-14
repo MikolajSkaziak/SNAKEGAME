@@ -103,7 +103,6 @@ def start_game():
     
     # Set the window dimensions based on the canvas size    
     window.geometry(f"{width}x{height+75}")
-    window.update()
     
     # Initialize the snake and food objects and start the game loop
     snake = Snake()
@@ -204,6 +203,9 @@ def gameover():
     
     global highscore_label, highscore
     
+    #Update the window geometry
+    window.geometry(f"{width}x{height}")
+    
     # Clear the canvas and display the game over message
     canvas.delete(ALL)
     canvas.create_text(
@@ -218,7 +220,7 @@ def gameover():
 
     # Display Play Again and Quit buttons
     play_again_button = tk.Button(
-       window,
+        window,
         background='Green',
         foreground=colour4,
         activebackground=colour3,
@@ -234,8 +236,11 @@ def gameover():
         font=('ARIAL', 20),
         command=reset_game
     )
-    play_again_button.pack(side='left')
-    
+    play_again_button_window = canvas.create_window(
+        canvas.winfo_width() / 2, canvas.winfo_height() / 2 + 150,
+        anchor='center', window=play_again_button
+    )
+
     quit_button = tk.Button(
         window,
         background='RED',
@@ -253,7 +258,10 @@ def gameover():
         font=('ARIAL', 20),
         command=window.quit
     )
-    quit_button.pack(side='right')
+    quit_button_window = canvas.create_window(
+        canvas.winfo_width() / 2, canvas.winfo_height() / 2 + 250,
+        anchor='center', window=quit_button
+    )
     
     # Update and display the highscore
     global highscore_label,highscore
