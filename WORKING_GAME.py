@@ -469,7 +469,7 @@ def Menu():
     main_frame.rowconfigure(0,weight=1)
     main_frame.rowconfigure(1,weight=1)
     # Load the menu background image
-    menu_background=Image.open('C:\\Users\\skuzi\\Documents\\GitHub\\SNAKEGAME\\MENU_BACKGROUND.jpg')
+    menu_background=Image.open('MENU_BACKGROUND.jpg')
     menu_background=ImageTk.PhotoImage(menu_background)
     # Display the menu background
     Menu_background = Label(main_frame,bg='#96d201' ,image=menu_background, bd=0)
