@@ -8,7 +8,7 @@ from PIL import Image,ImageTk
 # Define constants and configurations for the game
 GAME_WIDTH=700
 GAME_HEIGHT=700
-GAME_SPEED=150  
+GAME_SPEED=175
 SPACE_SIZE=35
 SNAKE_PARTS=3
 SNAKE_COLOUR="GREEN"
@@ -162,6 +162,10 @@ def next_move(snake, food):
     # Check for collision with walls or itself
     if check_collision(snake):
         gameover()
+        
+    elif  check_win_condition(snake):
+        you_win()   
+        
     else:
         # Continue the game loop with the updated speed
         window.after(GAME_SPEED, next_move, snake, food)
@@ -204,6 +208,87 @@ def check_collision(snake):
             return True
         
     return False
+
+# Function to handle the winning scenario
+def you_win():
+    # Update the window geometry
+    window.geometry(f"{width}x{height}")
+    
+    # Clear the canvas and display the "YOU WIN" message
+    canvas.delete(ALL)
+    canvas.create_text(
+        canvas.winfo_width() / 2, canvas.winfo_height() / 2 - 50,
+        font=('ARIAL', 70),
+        text="YOU WIN",
+        fill="green",
+        tag="youwin"
+    )
+
+    # Hide the score label
+    label.pack_forget()
+    
+    # Display Play Again and Quit buttons
+    play_again_button = tk.Button(
+        window,
+        background='Green',
+        foreground=colour4,
+        activebackground=colour3,
+        activeforeground=colour4,
+        highlightthickness=2,
+        highlightbackground=colour3,
+        highlightcolor='WHITE',
+        width=13,
+        height=2,
+        border=0,
+        cursor='hand2',
+        text='Play Again',
+        font=('ARIAL', 20),
+        command=reset_game
+    )
+    play_again_button_window = canvas.create_window(
+        canvas.winfo_width() / 2, canvas.winfo_height() / 2 + 150,
+        anchor='center', window=play_again_button
+    )
+
+    quit_button = tk.Button(
+        window,
+        background='RED',
+        foreground=colour4,
+        activebackground='lightcoral',
+        activeforeground=colour4,
+        highlightthickness=2,
+        highlightbackground='lightcoral',
+        highlightcolor='WHITE',
+        width=13,
+        height=2,
+        border=0,
+        cursor='hand2',
+        text='Quit',
+        font=('ARIAL', 20),
+        command=window.quit
+    )
+    quit_button_window = canvas.create_window(
+        canvas.winfo_width() / 2, canvas.winfo_height() / 2 + 250,
+        anchor='center', window=quit_button
+    )
+
+    # Update and display the highscore
+    global highscore_label, highscore
+    if score > highscore:
+        highscore = score
+        update_highscore_file()
+
+    highscore = read_highscore_file()
+    highscore_label = canvas.create_text(
+        canvas.winfo_width() / 2, canvas.winfo_height() / 2 + 50,
+        font=('ARIAL', 20),
+        text="BEST SCORE: {}".format(highscore),
+        fill="white",
+        tag="highscore")
+    
+# Function to check if the player has won
+def check_win_condition(snake):
+    return len(snake.coordinates) == (width // SPACE_SIZE) * (height // SPACE_SIZE)
 
 # Function to handle the gameover scenario
 def gameover():
