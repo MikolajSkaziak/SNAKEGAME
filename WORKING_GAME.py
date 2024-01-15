@@ -28,6 +28,7 @@ available_resolutions = ["700x700", "800x800", "900x900","1280x960"]
 # Initialize variables for the current resolution and UI elements
 current_resolution_index = 0
 current_resolution_label = None
+
 menu_background = None 
 
 # Class representing the Snake in the game
@@ -45,11 +46,8 @@ class Snake:
             fill_color = SNAKE_COLOUR if i == 0 else SNAKE_COLOUR_HEAD
             square = canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=fill_color, tag='snake')
             self.squares.append(square)
-    # Update the color of the snake's head
-    def update_head_color(self):
-        if not self.head_colored:
-            canvas.itemconfig(self.squares[0], fill=SNAKE_COLOUR_HEAD)
-            self.head_colored = True
+   
+    
             
 # Class representing the food in the game
 class Food:
@@ -64,8 +62,6 @@ class Food:
         self.coordinates = [x, y]
         # Create an oval representing the food
         canvas.create_oval(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=FOOD_COLOUR, tag='food')
-
-
 
 
         
