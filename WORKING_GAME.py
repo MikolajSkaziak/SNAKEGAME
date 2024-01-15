@@ -531,8 +531,9 @@ def reset_highest_score():
     response = messagebox.askyesno("Confirmation", "Are you sure you want to reset the BEST SCORE?")
     if response:
         with open("highscore.txt", "w") as file:
-            pass 
-         
+            global highscore
+            highscore = 0 
+            
 # Function to navigate and apply resolutions   
 def apply_resolution(direction):
     
