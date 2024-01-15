@@ -54,13 +54,17 @@ class Snake:
 # Class representing the food in the game
 class Food:
     
-    def __init__(self):
-       # Generate random coordinates for the food
-       x= random.randint(0,int(width / SPACE_SIZE)-1)*SPACE_SIZE 
-       y= random.randint(0,int(height / SPACE_SIZE)-1)*SPACE_SIZE
-       self.coordinates=[x,y]
-       # Create an oval representing the food
-       canvas.create_oval(x,y, x+SPACE_SIZE, y+SPACE_SIZE, fill=FOOD_COLOUR, tag= 'food')
+    def __init__(self, snake_coordinates):
+        # Generate random coordinates for the food that are not on the snake
+        while True:
+            x = random.randint(0, int(width / SPACE_SIZE) - 1) * SPACE_SIZE
+            y = random.randint(0, int(height / SPACE_SIZE) - 1) * SPACE_SIZE
+            if (x, y) not in snake_coordinates:
+                break
+        self.coordinates = [x, y]
+        # Create an oval representing the food
+        canvas.create_oval(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=FOOD_COLOUR, tag='food')
+
 
 
 
@@ -92,17 +96,17 @@ def start_game():
     
     global label, canvas, window, score
     
-    score=0
+    score = 0
     
     # Hide the main menu frame
     main_frame.pack_forget()
     
-     # Create and display the score label
-    label= Label(window,text="Score:{}".format(score), font=('ARIAL',40))
+    # Create and display the score label
+    label = Label(window, text="Score:{}".format(score), font=('ARIAL', 40))
     label.pack()
     
     # Create and display the game canvas
-    canvas= Canvas(window,bg=BACKGROUND_COLOUR,height=height,width=width)
+    canvas = Canvas(window, bg=BACKGROUND_COLOUR, height=height, width=width)
     canvas.pack()
     
     # Set the window dimensions based on the canvas size    
@@ -110,7 +114,7 @@ def start_game():
     
     # Initialize the snake and food objects and start the game loop
     snake = Snake()
-    food = Food()
+    food = Food(snake.coordinates)  # Pass snake coordinates to avoid spawning on the snake
     next_move(snake, food)
     
 # Function to handle the next move in the game    
@@ -127,7 +131,7 @@ def next_move(snake, food):
         x -= SPACE_SIZE
     elif direction == "right":
         x += SPACE_SIZE
-        
+
     # Update the snake's coordinates and create a new rectangle for the head
     snake.coordinates.insert(0, (x, y))
     square = canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=SNAKE_COLOUR_HEAD)
@@ -141,9 +145,8 @@ def next_move(snake, food):
         score += 1
         label.config(text="Score:{}".format(score))
         canvas.delete("food")
-        food = Food()
+        food = Food(snake.coordinates)  # Pass snake coordinates to avoid spawning on the snake
         GAME_SPEED -= 2
-        
     else:
         # Update the color of snake parts and remove the last part
         for i in range(len(snake.squares)):
@@ -155,10 +158,10 @@ def next_move(snake, food):
         del snake.coordinates[-1]
         canvas.delete(snake.squares[-1])
         del snake.squares[-1]
+
     # Check for collision with walls or itself
     if check_collision(snake):
         gameover()
-        
     else:
         # Continue the game loop with the updated speed
         window.after(GAME_SPEED, next_move, snake, food)
